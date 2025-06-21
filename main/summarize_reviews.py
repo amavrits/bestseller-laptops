@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 from dotenv import load_dotenv
 from openai import OpenAI
+import re
+
 
 # Prompt template
 def build_prompt(title, reviews):
@@ -57,13 +59,42 @@ if __name__ == "__main__":
 
                 result = response.choices[0].message.content.strip()
 
-                # Parse summaries
-                if "2. Summary of Complaints" in result:
-                    praise, complaint = result.split("2. Summary of Complaints", 1)
-                    praise = praise.replace("1. Summary of Praises", "").strip()
-                    complaint = complaint.strip()
+                # # Parse summaries
+                # match = re.search(r"1\.\s*Summary of Praises[:\n]*(.*)2\.\s*Summary of Complaints[:\n]*(.*)", result,
+                #                   re.DOTALL)
+                # if match:
+                #     praise = match.group(1).strip()
+                #     complaint = match.group(2).strip()
+                # else:
+                #     # fallback in case GPT format is unexpected
+                #     praise, complaint = result.strip(), ""
+
+                # Extract sections more reliably
+                praise = ""
+                complaint = ""
+
+                # Pattern matches both numbered and markdown headers
+                pattern = re.search(
+                    r"(?:1\.|###)\s*Summary of Praises[:\n]*(.*?)(?:2\.|###)\s*Summary of Complaints[:\n]*(.*)",
+                    result,
+                    re.DOTALL,
+                )
+
+                if pattern:
+                    praise = pattern.group(1).strip()
+                    complaint = pattern.group(2).strip()
+
+                    # Clean up bullet characters or excessive line breaks
+                    complaint = re.sub(r"\n- ?", "\n", complaint)
+                    complaint = re.sub(r"^- ?", "", complaint)
+                    complaint = re.sub(r"\s+", " ", complaint).strip()
+
+                    praise = re.sub(r"\n- ?", "\n", praise)
+                    praise = re.sub(r"^- ?", "", praise)
+                    praise = re.sub(r"\s+", " ", praise).strip()
                 else:
-                    praise, complaint = result, ""
+                    # fallback in case the format is not matched
+                    praise, complaint = result.strip(), ""
 
                 # Write to JSON
                 summary_data = {

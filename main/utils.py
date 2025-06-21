@@ -17,6 +17,22 @@ def parse_rating(rating_str):
     return None
 
 
+def clean_summary(text):
+    # Remove markdown-style headers
+    text = re.sub(r"\*\*Summary of Praises:\*\*", "", text)
+    text = re.sub(r"\*\*Summary of Complaints:\*\*", "", text)
+
+    # Remove bullet points
+    text = re.sub(r"(?m)^- ", "", text)
+    text = re.sub(r"\n- ", "\n", text)
+
+    # Final cleanup
+    text = text.strip()
+
+    # Return None if the cleaned summary is empty
+    return text if text else "NaN"
+
+
 if __name__ == "__main__":
 
     pass
