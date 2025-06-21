@@ -1,10 +1,11 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 import pandas as pd
 from pathlib import Path
 import time
-from main.utils import extract_asin
+from main.utils import *
 
 
 if __name__ == "__main__":
@@ -75,15 +76,25 @@ if __name__ == "__main__":
             rating_tag = item.select_one('span.a-icon-alt')
             rating = rating_tag.get_text(strip=True) if rating_tag else None
 
-            # Reviews
-            review_tag = item.select_one('a.a-size-small')
-            reviews = review_tag.get_text(strip=True) if review_tag else None
+            # try:
+            #     table = driver.find_element(By.ID, "productDetails_detailBullets_sections1")
+            #     rows = table.find_elements(By.TAG_NAME, "tr")
+            #     bestseller_rank = None
+            #     for row in rows:
+            #         header = row.find_element(By.TAG_NAME, "th").text.strip()
+            #         if "Best verkochte rang" in header:
+            #             value = row.find_element(By.TAG_NAME, "td").text.strip()
+            #             bestseller_rank = value
+            #             break
+            #     print(f"📦 Bestseller Rank: {bestseller_rank}")
+            # except Exception as e:
+            #     print(f"⚠️ Could not extract bestseller rank: {e}")
 
             data.append({
                 "Title": title,
                 "Price (€)": price,
                 "Rating": rating,
-                "Number of Reviews": reviews,
+                # "Bestseller rank": bestseller_rank,
                 "URL": url
             })
 
@@ -91,6 +102,7 @@ if __name__ == "__main__":
 
     # Save to CSV and preview
     df = pd.DataFrame(data)
+    df["Rating (out of 5)"] = df["Rating"].apply(parse_rating)
     df["ASIN"] = df["URL"].apply(extract_asin)
     # Drop duplicates by ASIN
     df = df.drop_duplicates(subset="ASIN").reset_index(drop=True)

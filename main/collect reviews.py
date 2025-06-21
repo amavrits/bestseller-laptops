@@ -16,6 +16,7 @@ if __name__ == "__main__":
 
     # Load laptop CSV
     df = pd.read_csv(r"../data/amazon_top50_laptops.csv")
+    df["Number of Reviews"] = 0
 
     # Headless Chrome setup
     options = Options()
@@ -59,9 +60,14 @@ if __name__ == "__main__":
             "Reviews": reviews
         }
 
+        number_of_reviews = len(reviews)
+        df.loc[index, "Number of Reviews"] = number_of_reviews
+
         with open(review_path/f"{asin}.json", "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
     driver.quit()
     print("✅ Saved all reviews!")
 
+    df.to_csv("../data/amazon_top50_laptops.csv", index=False)
+    print("✅ Saved laptops with number of reviews to amazon_top50_laptops.csv")
