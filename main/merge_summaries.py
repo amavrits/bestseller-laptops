@@ -8,8 +8,8 @@ if __name__ == "__main__":
 
     # === Paths ===
     csv_path = Path("../data/amazon_top50_laptops.csv")  # adjust path to your original CSV
-    summary_dir = Path("../results/laptop_review_summaries")
-    output_path = Path("../results/amazon_top50_laptops_reviewed.csv")
+    summary_dir = Path("../data/laptop_review_summaries")
+    output_path = Path("../data/amazon_top50_laptops_reviewed.csv")
 
     # === Load main dataset ===
     df = pd.read_csv(csv_path)
