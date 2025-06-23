@@ -63,7 +63,6 @@ main/
 ## ✅ Requirements
 
 - Python 3.11+
-- [Poetry](https://python-poetry.org/)
 - Google Chrome + chromedriver
 - OpenAI API key (with access to GPT-4o)
 
@@ -72,7 +71,7 @@ main/
 ## 📦 Installation
 
 ```bash
-poetry install
+pip install -r requirements.txt
 ```
 
 ## 🔑 API Key
