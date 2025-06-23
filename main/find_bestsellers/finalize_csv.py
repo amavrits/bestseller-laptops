@@ -4,7 +4,12 @@ from pathlib import Path
 
 if __name__ == "__main__":
 
-    df = pd.read_csv(Path("../data/amazon_top50_laptops_reviewed_cleantitle.csv"))
+    ROOT_DIR = Path(__file__).resolve().parents[2]  # go up to the project root
+    DATA_DIR = ROOT_DIR / "data"
+    CSV_PATH = DATA_DIR / "amazon_top50_laptops.csv"
+    OUTPUT_PATH = ROOT_DIR / "results/amazon_top50_laptops.csv"
+
+    df = pd.read_csv(CSV_PATH)
 
     rename_columns = {
         "Rating (out of 5)": "Average Rating (e.g., 4.5 out of 5)",
@@ -27,5 +32,5 @@ if __name__ == "__main__":
     ]
 
     df_final = df_final[columns]
-    df_final.to_csv(Path("../results/amazon_top50_bestseller_laptops.csv"))
+    df_final.to_csv(OUTPUT_PATH)
 

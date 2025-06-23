@@ -6,16 +6,19 @@ from bs4 import BeautifulSoup
 import time
 import json
 from pathlib import Path
-from main.utils import extract_asin
+from main.find_bestsellers.utils import extract_asin
 
 
 if __name__ == "__main__":
 
-    review_path = Path("../data/laptop_reviews")
-    review_path.mkdir(parents=True, exist_ok=True)
+    ROOT_DIR = Path(__file__).resolve().parents[2]  # go up to the project root
+    DATA_DIR = ROOT_DIR / "data"
+    REVIEWS_DIR = DATA_DIR / "laptop_reviews"
+
+    REVIEWS_DIR.mkdir(parents=True, exist_ok=True)
 
     # Load laptop CSV
-    df = pd.read_csv(r"../data/amazon_top50_laptops.csv")
+    df = pd.read_csv(DATA_DIR/"amazon_top50_laptops.csv")
     df["Number of Reviews"] = 0
 
     # Headless Chrome setup
@@ -63,7 +66,7 @@ if __name__ == "__main__":
         number_of_reviews = len(reviews)
         df.loc[index, "Number of Reviews"] = number_of_reviews
 
-        with open(review_path/f"{asin}.json", "w", encoding="utf-8") as f:
+        with open(REVIEWS_DIR/f"{asin}.json", "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
     driver.quit()

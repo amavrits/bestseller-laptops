@@ -1,17 +1,16 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-import pandas as pd
 from pathlib import Path
 import time
-from main.utils import *
+from main.find_bestsellers.utils import *
 
 
 if __name__ == "__main__":
 
-    output_path = Path("../data")
-    output_path.mkdir(parents=True, exist_ok=True)
+    ROOT_DIR = Path(__file__).resolve().parents[2]  # go up to the project root
+    DATA_DIR = ROOT_DIR / "data"
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     # Setup headless Chrome
     options = Options()
@@ -84,6 +83,6 @@ if __name__ == "__main__":
     df["Rating (out of 5)"] = df["Rating"].apply(parse_rating)
     df["ASIN"] = df["URL"].apply(extract_asin)
     df = df.drop_duplicates(subset="ASIN").reset_index(drop=True)
-    df.to_csv(output_path / "amazon_top50_laptops.csv", index=False)
+    df.to_csv(DATA_DIR / "amazon_top50_laptops.csv", index=False)
     print("✅ Saved to amazon_top50_laptops.csv")
 

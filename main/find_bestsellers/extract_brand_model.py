@@ -29,7 +29,11 @@ if __name__ == "__main__":
     load_dotenv()
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    df = pd.read_csv(Path("../data/amazon_top50_laptops_reviewed.csv"))
+    ROOT_DIR = Path(__file__).resolve().parents[2]  # go up to the project root
+    DATA_DIR = ROOT_DIR / "data"
+    CSV_PATH = DATA_DIR / "amazon_top50_laptops.csv"
+
+    df = pd.read_csv(CSV_PATH)
     df["Brand"] = ""
     df["Model"] = ""
 
@@ -55,5 +59,5 @@ if __name__ == "__main__":
 
         print(f"[{index + 1}/{len(df)}] ✅ Extracted {title}")
 
-    df.to_csv(Path("../data/amazon_top50_laptops_reviewed_cleantitle.csv"), index=False)
+    df.to_csv(CSV_PATH, index=False)
 
