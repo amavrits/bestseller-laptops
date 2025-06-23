@@ -1,9 +1,9 @@
 import os
 import pandas as pd
 from openai import OpenAI
-from utils import parse_brand_model
 from pathlib import Path
 from dotenv import load_dotenv
+from main.find_bestsellers.utils import parse_brand_model
 
 
 def build_brand_model_prompt(title):

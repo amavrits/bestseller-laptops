@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 from pathlib import Path
-from utils import clean_summary
+from main.find_bestsellers.utils import clean_summary
 
 
 if __name__ == "__main__":
@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     # === Load summaries ===
     summaries = {}
-    for file in summary_dir.glob("*.json"):
+    for file in SUMMARY_DIR.glob("*.json"):
         with open(file, "r", encoding="utf-8") as f:
             data = json.load(f)
             summaries[data["ASIN"]] = {

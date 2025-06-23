@@ -7,7 +7,9 @@ if __name__ == "__main__":
     ROOT_DIR = Path(__file__).resolve().parents[2]  # go up to the project root
     DATA_DIR = ROOT_DIR / "data"
     CSV_PATH = DATA_DIR / "amazon_top50_laptops.csv"
-    OUTPUT_PATH = ROOT_DIR / "results/amazon_top50_laptops.csv"
+    RESULT_PATH = ROOT_DIR / "results"
+    RESULT_PATH.mkdir(parents=True, exist_ok=True)
+    OUTPUT_PATH = RESULT_PATH / "amazon_top50_laptops.csv"
 
     df = pd.read_csv(CSV_PATH)
 

@@ -8,10 +8,6 @@ source .venv/bin/activate
 
 export PYTHONPATH=$(pwd)
 
-# Confirm setup
-echo "🔍 Current working directory: $(pwd)"
-echo "🐍 PYTHONPATH set to: $PYTHONPATH"
-
 echo "🧲 Running amazon_webscrapper.py..."
 python -m main.find_bestsellers.amazon_webscraping
 

@@ -13,12 +13,13 @@ if __name__ == "__main__":
 
     ROOT_DIR = Path(__file__).resolve().parents[2]  # go up to the project root
     DATA_DIR = ROOT_DIR / "data"
+    CSV_PATH = DATA_DIR / "amazon_top50_laptops.csv"
     REVIEWS_DIR = DATA_DIR / "laptop_reviews"
 
     REVIEWS_DIR.mkdir(parents=True, exist_ok=True)
 
     # Load laptop CSV
-    df = pd.read_csv(DATA_DIR/"amazon_top50_laptops.csv")
+    df = pd.read_csv(CSV_PATH)
     df["Number of Reviews"] = 0
 
     # Headless Chrome setup
@@ -72,5 +73,5 @@ if __name__ == "__main__":
     driver.quit()
     print("✅ Saved all reviews!")
 
-    df.to_csv("../data/amazon_top50_laptops.csv", index=False)
+    df.to_csv(CSV_PATH, index=False)
     print("✅ Saved laptops with number of reviews to amazon_top50_laptops.csv")

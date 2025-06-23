@@ -44,11 +44,11 @@ if __name__ == "__main__":
     SUMMARY_DIR = DATA_DIR / "laptop_review_summaries"
     SUMMARY_DIR.mkdir(parents=True, exist_ok=True)
 
-    review_items = os.listdir(reviews_dir)
+    review_items = os.listdir(REVIEWS_DIR)
     n_items = len(review_items)
     for i, filename in enumerate(review_items):
         if filename.endswith(".json"):
-            with open(reviews_dir / filename, "r", encoding="utf-8") as f:
+            with open(REVIEWS_DIR / filename, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             reviews = data.get("Reviews", [])
